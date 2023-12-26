@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Query, Param } from '@nestjs/common';
+import { AppService, IUser } from './app.service';
 
-@Controller()
+@Controller('/user')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getUsers(@Query() params: any) : IUser[]{
+    return this.appService.findUsersByName(params.name);
+  }
+
+  @Get(':id')
+  getUserById(@Param() params: any): IUser{
+    return this.appService.findUserById(params.id);
   }
 }
